@@ -1,0 +1,112 @@
+class NilaiController {
+    constructor(model, view) {
+        this.model = model;
+        this.view = view;
+    }
+
+    tampilkanRataRata(nilai) {
+        try {
+            const modelNilai = new this.model(nilai);
+            const rataRata = modelNilai.hitungRataRata();
+            this.view.renderRataRata(rataRata);
+        } catch (error) {
+            this.view.renderError(error.message);
+        }
+    }
+}
+
+// Inisialisasi dan Penggunaan
+const modelRataRata = new TampilkanModelRataRata(model, view);
+const nilaiTampilkanRataRata = new TampilkanRataRata([75, 89, 98, 91 , 85, 78, 65]); // Menampilkan rata-rata
+const nilaiTidakValid = new TampilkanNilaiTidakValid([]);            // Menampilkan error: Data nilai tidak valid atau kosong.
+class Nilai {
+    constructor(nilai) {
+        this.nilai = nilai;
+    }
+
+    hitungRataRata() {
+        if (!Array.isArray(this.nilai) || this.nilai.length === 0) {
+            throw new Error("Data nilai tidak valid atau kosong.");
+        }
+        const total = this.nilai.reduce((acc, curr) => acc + curr, 0);
+        return total / this.nilai.length;
+    }
+}
+class NilaiView {
+    render(rataRata) {
+        return `
+            <div class="nilai-card">
+                <p>Rata-rata nilai: ${rataRata}</p>
+            </div>
+        `;
+    }
+
+    renderError(error) {
+        return `
+            <div class="nilai-card error">
+                <p>Error: ${error}</p>
+            </div>
+        `;
+    }
+}
+function bagi(a, b) {
+    try {
+        if (b === 0) {
+            throw new Error("Pembagian dengan nol tidak diperbolehkan.");
+        }
+        return a / b;
+    } catch (error) {
+        console.error("Terjadi error:", error.message);
+    } finally {
+        console.log("Operasi pembagian selesai.");
+    }
+}
+function perkalian(a, b) {
+    try {
+        if (b === 0) {
+            throw new Error("Perkalian dengan nol tidak diperbolehkan.");
+        }
+        return a * b;
+    } catch (error) {
+        console.error("Terjadi error:", error.message);
+    } finally {
+        console.log("Operasi perkalian selesai.");
+    }
+}
+
+function penjumlahan(a, b) {
+    try {
+        if (b === 10) {
+            throw new Error("Khusus Penjumlahan dibawah 5.");
+        }
+        return a + b;
+    } catch (error) {
+        console.error("Terjadi error:", error.message);
+    } finally {
+        console.log("Penjumlahan berhasil.");
+    }
+}
+
+function pengurangan(a, b) {
+    try {
+        // Check if b is greater than 10
+        if (b > 10) {
+            throw new Error("Jika lebih dari 10.");
+        }
+        return a - b; // Perform subtraction if b is valid
+    } catch (error) {
+        console.error("Terjadi error:", error.message); // Log the error message
+    } finally {
+        console.log("Operasi selesai."); // Indicate that the operation is complete
+    }
+}
+// Penggunaan fungsi bagi
+console.log(bagi(10, 2)); // Output: 5
+console.log(bagi(10, 0)); // Output: Terjadi error: Pembagian dengan nol tidak diperbolehkan.
+                           //         Operasi pembagian selesai.
+console.log(perkalian(23, 5)); 
+console.log(perkalian(34, 4));
+console.log(penjumlahan(3, 1)); 
+console.log(penjumlahan(4, 1));
+console.log(pengurangan(7, 1)); 
+console.log(pengurangan(8, 1));
